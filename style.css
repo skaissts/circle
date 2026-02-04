@@ -56,6 +56,9 @@ body {
     height: 100%;
     z-index: -1;
     pointer-events: none;
+    outline: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 
 /* Staggered Reveal Delays */
@@ -116,34 +119,60 @@ img {
 }
 
 section {
-    padding: var(--spacing-lg) 0;
-    /* Reduced general padding */
+    padding: var(--spacing-md) 0;
+    /* Reduced general padding to 2rem */
 }
 
 #paintings {
     padding: var(--spacing-md) 0 0 0;
-    /* Extra small padding for paintings, no background here */
 }
 
 /* Background wrapper starts AFTER the title container */
 .content-background-wrapper {
-    background-color: rgba(128, 0, 32, 0.9);
-    /* 90% opacity burgundy */
+    background-color: rgba(128, 0, 32, 0.95); /* Deep burgundy */
     color: #ffffff;
-    padding: var(--spacing-lg) 0;
-    margin-top: 0;
+    padding: 10px 0; /* Minimal internal padding */
+    margin: 0;
+    position: relative;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    box-shadow: 0 0 0 100vmax rgba(128, 0, 32, 0.95); /* Better way to do full width without side gaps */
+    clip-path: inset(0 -100vmax); /* Keep shadow within bounds */
+}
+
+.content-background-wrapper .section-title {
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.content-background-wrapper .caption {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.content-background-wrapper .nav-btn {
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.content-background-wrapper .nav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 #paintings .section-title,
 #logos .section-title {
-    /* Revert to default or dark color since it's now on white */
     color: var(--text-secondary);
     border-color: var(--border);
-    margin-bottom: 0;
+    margin-bottom: 0 !important;
+    padding-bottom: 2px !important;
+}
+
+#paintings, #logos {
+    padding-top: 1rem !important; /* Extremely tight top */
+    padding-bottom: 0 !important;
 }
 
 .content-background-wrapper .caption {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-secondary);
 }
 
 h1,
@@ -158,13 +187,11 @@ h4 {
 
 .section-title {
     font-size: 1.1rem;
-    /* Larger */
     font-weight: 500;
-    /* Thicker */
     color: var(--text-secondary);
     border-bottom: 1px solid var(--border);
     padding-bottom: var(--spacing-xs);
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-md); /* Reduced from lg */
 }
 
 /* Placeholder Utility */
@@ -209,8 +236,8 @@ h4 {
 
 .symbol-container {
     position: relative;
-    width: clamp(280px, 80vw, 400px);
-    height: clamp(280px, 80vw, 400px);
+    width: 400px;
+    height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -220,11 +247,11 @@ h4 {
 
 .symbol-container .circle {
     position: absolute;
-    width: clamp(30px, 10vw, 48px);
-    height: clamp(30px, 10vw, 48px);
+    width: 48px;
+    height: 48px;
     background-color: transparent;
     /* Hollow center */
-    border: clamp(6px, 2vw, 10px) solid var(--accent);
+    border: 10px solid var(--accent);
     /* Balanced black outline */
     border-radius: 50%;
     opacity: 0;
@@ -276,7 +303,7 @@ h4 {
 }
 
 .symbol-container .circle {
-    transform: rotate(var(--rot)) translate(clamp(100px, 30vw, 150px));
+    transform: rotate(var(--rot)) translate(150px);
 }
 
 @keyframes circleBloom {
@@ -471,15 +498,14 @@ header.scrolled {
     letter-spacing: 0.05em;
 }
 
-/* Editorial Grid */
 .editorial-grid {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    gap: var(--spacing-lg);
-    margin: 0 auto var(--spacing-lg) auto;
-    max-width: 1400px;
-    /* Expansion room */
+    align-items: center;
+    gap: 15px; /* Tighter gap */
+    margin: 0 auto;
+    padding: 10px 0; /* Minimal padding */
+    max-width: var(--max-width);
 }
 
 .grid-item {
@@ -493,8 +519,7 @@ header.scrolled {
     /* Large presence */
     width: auto;
     object-fit: contain;
-    border: 1px solid var(--border);
-    /* Clean grey border */
+    /* Removing the border that the user called "контур" */
     transition: transform 0.6s ease;
 }
 
@@ -508,17 +533,15 @@ header.scrolled {
 /* Divider */
 .section-divider {
     height: 1px;
-    background-color: var(--border);
-    margin: var(--spacing-md) auto;
-    width: 200px;
-    /* Centered divider */
+    background-color: rgba(255, 255, 255, 0.15);
+    margin: 10px auto; /* ULTRA TIGHT */
+    width: 150px;
 }
 
 /* Carousel */
 .carousel-section {
     margin: 0 auto;
     max-width: 1200px;
-    /* Wider for bigger items */
 }
 
 .carousel-container {
@@ -620,7 +643,7 @@ header.scrolled {
 
 /* Logo Grid */
 .logo-grid .logo-item {
-    border: 1px solid var(--border);
+    /* Removing border here too just in case */
 }
 
 /* Website Cards */
@@ -655,12 +678,6 @@ header.scrolled {
     aspect-ratio: 3/4;
     object-fit: cover;
     border-radius: 2px;
-    filter: grayscale(100%);
-    transition: filter 0.3s ease;
-}
-
-.team-member:hover .team-member__photo img {
-    filter: grayscale(0%);
 }
 
 .team-member__info {
@@ -709,17 +726,17 @@ header.scrolled {
 @media (max-width: 768px) {
     .team-member {
         grid-template-columns: 1fr; /* Stack vertically */
-        gap: var(--spacing-md);
-        text-align: center;
+        gap: var(--spacing-lg);
+        text-align: left; /* Aligned to left as requested */
     }
     
     .team-member__photo {
-        max-width: 250px; /* Limit image size */
-        margin: 0 auto;
+        max-width: 100%; /* Larger photo on mobile */
+        margin: 0;
     }
 
     .bio-separator-small {
-        margin: var(--spacing-md) auto; /* Center separator */
+        margin: var(--spacing-md) 0; /* Align separator to left */
     }
 }
 
@@ -736,6 +753,15 @@ header.scrolled {
     font-size: 1rem;
     line-height: 1.7;
     font-weight: 300;
+}
+
+@media (max-width: 768px) {
+    .bio-intro-text,
+    .team-workflow__text,
+    .feature-description,
+    .contact-intro {
+        text-align: left !important;
+    }
 }
 
 /* Contact Section */
@@ -1183,14 +1209,25 @@ footer {
 @media (max-width: 768px) {
     .team-member {
         flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: var(--spacing-sm);
+        align-items: flex-start; /* Выравнивание по левому краю */
+        text-align: left; /* Текст по левому краю */
+        gap: var(--spacing-md);
     }
 
     .team-member__photo {
-        width: 70px;
-        height: 88px;
+        max-width: 100%; /* Большой размер как на десктопе */
+        width: auto;
+        height: auto;
+    }
+
+    .team-member__photo img {
+        max-width: 200px; /* Такой же размер как на десктопе */
+        width: 100%;
+        height: auto;
+    }
+
+    .bio-divider {
+        margin: var(--spacing-md) auto; /* Центрирование линий */
     }
 }
 

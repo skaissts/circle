@@ -49,145 +49,91 @@ document.addEventListener('DOMContentLoaded', () => {
         const track = section.querySelector('.carousel-track');
         const nextBtn = section.querySelector('.nav-btn.next');
         const prevBtn = section.querySelector('.nav-btn.prev');
-
         if (!track || !nextBtn || !prevBtn) return;
 
-        let items = Array.from(track.querySelectorAll('.carousel-item'));
-        const originalLength = items.length;
+        const originalItems = Array.from(track.querySelectorAll('.carousel-item'));
+        const n = originalItems.length;
+        if (n === 0) return;
+
         const gap = 10;
-
-        if (originalLength === 0) return;
-
-        // Clone items for infinite effect
-        items.forEach(item => {
-            const clone = item.cloneNode(true);
-            track.appendChild(clone);
-        });
-        items.reverse().forEach(item => {
-            const clone = item.cloneNode(true);
-            track.insertBefore(clone, track.firstChild);
-        });
-
-        // Re-query items after cloning
-        const allItems = track.querySelectorAll('.carousel-item');
-        let index = originalLength;
-        let isTransitioning = false;
-
-        const updateCarousel = (instant = false) => {
-            const itemWidth = allItems[0].offsetWidth;
-            if (instant) track.style.transition = 'none';
-            else track.style.transition = 'transform 0.6s cubic-bezier(0.65, 0, 0.35, 1)';
-
-            track.style.transform = `translateX(-${index * (itemWidth + gap)}px)`;
-        };
-
-        // Initial position
-        updateCarousel(true);
-
-        const handleLoop = () => {
-            isTransitioning = false;
-            const itemWidth = allItems[0].offsetWidth;
-
-            if (index >= originalLength * 2) {
-                index = originalLength;
-                track.style.transition = 'none';
-                track.style.transform = `translateX(-${index * (itemWidth + gap)}px)`;
-            } else if (index < originalLength) {
-                index = originalLength * 2 - 1;
-                track.style.transition = 'none';
-                track.style.transform = `translateX(-${index * (itemWidth + gap)}px)`;
-            }
-        };
-
-        track.addEventListener('transitionend', handleLoop);
-
-        nextBtn.addEventListener('click', () => {
-            if (isTransitioning) return;
-            isTransitioning = true;
-            index++;
-            updateCarousel();
-        });
-
-        prevBtn.addEventListener('click', () => {
-            if (isTransitioning) return;
-            isTransitioning = true;
-            index--;
-            updateCarousel();
-        });
-
-        window.addEventListener('resize', () => updateCarousel(true));
-
-        // Force update once page is fully loaded to ensure correct widths
-        window.addEventListener('load', () => updateCarousel(true));
-
-        // Also update when individual images load (fallback)
-        allItems.forEach(item => {
-            const img = item.querySelector('img');
-            if (img) {
-                if (img.complete) {
-                    updateCarousel(true);
-                } else {
-                    img.addEventListener('load', () => updateCarousel(true));
-                }
-            }
-        });
-
-        // Continuous smooth auto-scroll
-        let scrollOffset = 0;
-        // Alternate direction: even index = right (positive), odd index = left (negative)
-        const scrollDirection = carouselIndex % 2 === 0 ? 1 : -1;
-        const scrollSpeed = 0.5 * scrollDirection; // Pixels per frame
-        let isPaused = false;
-
-        const continuousScroll = () => {
-            if (!isPaused && !isTransitioning) {
-                scrollOffset += scrollSpeed;
-                const itemWidth = allItems[0].offsetWidth;
-                const singleSetWidth = originalLength * (itemWidth + gap);
-
-                // Reset offset seamlessly when we've scrolled one full set
-                if (scrollOffset >= singleSetWidth) {
-                    scrollOffset = 0;
-                }
-                if (scrollOffset < 0) {
-                    scrollOffset = singleSetWidth;
-                }
-
-                track.style.transition = 'none';
-                track.style.transform = `translateX(-${(index * (itemWidth + gap)) + scrollOffset}px)`;
-            }
-            requestAnimationFrame(continuousScroll);
-        };
-
-        requestAnimationFrame(continuousScroll);
-
-        // Pause on hover for manual control
-        // Pause on hover/interaction for manual control, resume after delay
-        const carouselContainer = section.querySelector('.carousel-container');
-        let resumeTimeout;
-
-        if (carouselContainer) {
-            const pauseCarousel = () => {
-                isPaused = true;
-                clearTimeout(resumeTimeout);
-            };
-
-            const resumeCarousel = () => {
-                resumeTimeout = setTimeout(() => {
-                    isPaused = false;
-                }, 3000); // Resume after 3 seconds of inactivity
-            };
-
-            // Mouse events
-            carouselContainer.addEventListener('mouseenter', pauseCarousel);
-            carouselContainer.addEventListener('mouseleave', () => {
-                resumeCarousel();
-            });
-
-            // Touch events for mobile
-            carouselContainer.addEventListener('touchstart', pauseCarousel, { passive: true });
-            carouselContainer.addEventListener('touchend', resumeCarousel);
+        
+        // Ensure enough clones for stability (Total 4 sets)
+        for(let i=0; i<3; i++) {
+            originalItems.forEach(item => track.appendChild(item.cloneNode(true)));
         }
+
+        const allItems = track.querySelectorAll('.carousel-item');
+        let currentX = 0;
+        let isPaused = false;
+        let isManualTransition = false;
+        let pauseTimeout;
+        const direction = carouselIndex % 2 === 0 ? 1 : -1;
+        const speed = 0.5 * direction;
+
+        const getItemWidth = () => allItems[0].offsetWidth + gap;
+        const getSetWidth = () => n * getItemWidth();
+
+        const updateTrack = (instant = false) => {
+            track.style.transition = instant ? 'none' : 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
+            track.style.transform = `translateX(-${currentX}px)`;
+        };
+
+        const resetPosition = () => {
+            const sw = getSetWidth();
+            if (sw === 0) return;
+            // Stay within CloneSet 1 [sw, 2*sw)
+            while (currentX >= 2 * sw) currentX -= sw;
+            while (currentX < sw) currentX += sw;
+            updateTrack(true);
+        };
+
+        const handleManualNav = (dir) => {
+            if (isManualTransition) return;
+            isPaused = true;
+            isManualTransition = true;
+            clearTimeout(pauseTimeout);
+
+            const w = getItemWidth();
+            // Move exactly to the next or previous item relative to current position
+            const targetX = dir > 0 
+                ? (Math.floor(currentX / w) + 1) * w 
+                : (Math.ceil(currentX / w) - 1) * w;
+            
+            currentX = targetX;
+            updateTrack();
+
+            // Set state to transitioning so auto-scroll doesn't fight the CSS transition
+            setTimeout(() => {
+                isManualTransition = false;
+                resetPosition(); // Silent snap to keep within bounds
+            }, 650);
+
+            pauseTimeout = setTimeout(() => {
+                isPaused = false;
+            }, 3000); // 3 second pause
+        };
+
+        nextBtn.addEventListener('click', () => handleManualNav(1));
+        prevBtn.addEventListener('click', () => handleManualNav(-1));
+
+        const animate = () => {
+            if (!isPaused && !isManualTransition) {
+                currentX += speed;
+                const sw = getSetWidth();
+                if (sw > 0) {
+                    if (currentX >= 2 * sw) currentX -= sw;
+                    if (currentX < sw) currentX += sw;
+                }
+                track.style.transition = 'none';
+                track.style.transform = `translateX(-${currentX}px)`;
+            }
+            requestAnimationFrame(animate);
+        };
+
+        window.addEventListener('resize', resetPosition);
+        window.addEventListener('load', resetPosition);
+        setTimeout(resetPosition, 100);
+        requestAnimationFrame(animate);
     };
 
     // Initialize all carousels with index for alternating direction
@@ -328,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const particleCount = 60; // Not too crowded
         const connectionDistance = 100; // Unused for simple dust, but good for constellation fx
 
-        let lastWidth = window.innerWidth;
+        let lastWidth = 0; // Initialize to 0 to ensure first resize runs
 
         const resize = () => {
             // Only resize if width changes (ignores mobile URL bar height changes)
@@ -396,10 +342,30 @@ document.addEventListener('DOMContentLoaded', () => {
         const animate = () => {
             ctx.clearRect(0, 0, width, height);
 
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
+            // Check if Hero or Contact is in view to show particles
+            const hero = document.getElementById('hero');
+            const contact = document.getElementById('contact');
+            let shouldShow = false;
+
+            if (hero || contact) {
+                const heroRect = hero?.getBoundingClientRect();
+                const contactRect = contact?.getBoundingClientRect();
+                
+                const isHeroVisible = heroRect && heroRect.bottom > 0 && heroRect.top < window.innerHeight;
+                const isContactVisible = contactRect && contactRect.bottom > 0 && contactRect.top < window.innerHeight;
+                
+                shouldShow = isHeroVisible || isContactVisible;
+            }
+
+            if (shouldShow) {
+                canvas.style.opacity = '1';
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+            } else {
+                canvas.style.opacity = '0';
+            }
 
             requestAnimationFrame(animate);
         };
