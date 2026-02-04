@@ -139,8 +139,8 @@ section {
     box-shadow: none; /* Remove legacy shadow hack */
     clip-path: none;
     margin-top: 0;
-    padding-top: 2rem; /* Restore some internal padding */
-    padding-bottom: 2rem;
+    padding-top: 0.7rem; /* Reduced by ~3x from 2rem */
+    padding-bottom: 0.7rem;
 }
 
 .content-background-wrapper .section-title {
@@ -540,9 +540,9 @@ header.scrolled {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 15px; /* Tighter gap */
+    gap: 5px; /* Reduced by 3x from 15px */
     margin: 0 auto;
-    padding: 10px 0; /* Minimal padding */
+    padding: 5px 0; /* Minimal padding */
     max-width: var(--max-width);
 }
 
