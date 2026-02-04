@@ -70,8 +70,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const direction = carouselIndex % 2 === 0 ? 1 : -1;
         const speed = 0.5 * direction;
 
-        const getItemWidth = () => allItems[0].offsetWidth + gap;
-        const getSetWidth = () => n * getItemWidth();
+        const getItemWidth = (el) => el.offsetWidth + gap;
+        
+        const getSetWidth = () => {
+            let total = 0;
+            for(let i = 0; i < n; i++) {
+                total += getItemWidth(originalItems[i]);
+            }
+            return total;
+        };
 
         const updateTrack = (instant = false) => {
             track.style.transition = instant ? 'none' : 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
@@ -93,13 +100,14 @@ document.addEventListener('DOMContentLoaded', () => {
             isManualTransition = true;
             clearTimeout(pauseTimeout);
 
-            const w = getItemWidth();
-            // Move exactly to the next or previous item relative to current position
-            const targetX = dir > 0 
-                ? (Math.floor(currentX / w) + 1) * w 
-                : (Math.ceil(currentX / w) - 1) * w;
+            const sw = getSetWidth();
+            const avgW = sw / n;
             
-            currentX = targetX;
+            // Move approximately to the next/prev based on average width
+            // Since we use variable widths, we'll snap to the nearest item in resetPosition later
+            // For now, simple jump is enough for UX
+            currentX += avgW * dir;
+            
             updateTrack();
 
             // Set state to transitioning so auto-scroll doesn't fight the CSS transition
@@ -210,18 +218,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    // Track both text and image reveals
+    document.querySelectorAll('.reveal-text, .reveal-image').forEach(el => observer.observe(el));
 
     // Stagger Animations for Grids
     const staggerGrids = () => {
         document.querySelectorAll('.editorial-grid, .contact-grid-layout').forEach(grid => {
             const items = grid.querySelectorAll('.grid-item, .contact-block');
             items.forEach((item, index) => {
-                item.classList.add('reveal'); // Ensure transparency
-                // Cycle through delays: 0, 100, 200, 300
-                const delay = (index % 4) * 100;
-                if (delay > 0) item.classList.add(`delay-${delay}`);
-                observer.observe(item);
+                // Determine if item or its content should be revealed
+                // Most grid items contain images or blocks
+                const target = item.classList.contains('reveal-image') || item.classList.contains('reveal-text') 
+                    ? item 
+                    : item.querySelector('.reveal-image, .reveal-text');
+                
+                if (target) {
+                    const delay = (index % 4) * 100;
+                    if (delay > 0) target.classList.add(`delay-${delay}`);
+                    observer.observe(target);
+                }
             });
         });
     };
@@ -376,4 +391,32 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     initDust();
+
+    // Load Handling & Preloader
+    window.addEventListener('load', () => {
+        // Minimum preloader time for brand experience
+        setTimeout(() => {
+            document.body.classList.remove('loading');
+            document.body.classList.add('body-loaded');
+            
+            // Trigger initial reveals after preloader is gone
+            setTimeout(() => {
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+
+                document.querySelectorAll('.reveal-text, .reveal-image').forEach(el => observer.observe(el));
+            }, 300);
+        }, 800);
+    });
 });

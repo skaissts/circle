@@ -12,7 +12,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body class="loading">
+    <div id="preloader">
+        <div class="preloader-content">
+            <div class="preloader-symbol"></div>
+            <div class="preloader-text">CIRCLE STUDIO</div>
+        </div>
+    </div>
     <canvas id="dust-canvas"></canvas>
     <header id="header">
         <div class="container header-content">
@@ -39,7 +45,7 @@
         <section id="hero">
             <div class="container">
                 <div class="placeholder hero-image" style="height: 60vh;">
-                    <div class="symbol-scroll-wrapper">
+                    <div class="symbol-scroll-wrapper reveal-image">
                         <div class="symbol-container">
                             <div class="circle"></div>
                             <div class="circle"></div>
@@ -53,47 +59,47 @@
                     </div>
                 </div>
                 <div class="hero-text">
-                    <h1>Explanation Kills Art</h1>
-                    <p class="subtitle">A curation of visual explorations and digital experiences.</p>
+                    <h1 class="reveal-text">Explanation Kills Art</h1>
+                    <p class="subtitle reveal-text">A curation of visual explorations and digital experiences.</p>
                 </div>
             </div>
         </section>
 
         <!-- Studio Description Section -->
-        <div class="section-divider reveal"></div>
+        <div class="section-divider reveal-image"></div>
         
         <section id="studio-description">
             <div class="container">
-                <div class="text-divider reveal"></div>
-                <p class="studio-description-text reveal">
+                <div class="text-divider reveal-image"></div>
+                <p class="studio-description-text reveal-text">
                     Cir<span class="accent-c">c</span>le Studio is a multidisciplinary studio focused on visual art and digital design. Our work spans physical artworks and digital products, uniting artistic expression with functional design.
                 </p>
-                <div class="text-divider reveal"></div>
+                <div class="text-divider reveal-image"></div>
             </div>
         </section>
 
-        <div class="section-divider reveal"></div>
+        <div class="section-divider reveal-image"></div>
 
 
 
         <section id="paintings">
             <div class="container">
-                <h2 class="section-title reveal">Pa<span style="color: #800020">i</span>ntings</h2>
+                <h2 class="section-title reveal-text">Pa<span style="color: #800020">i</span>ntings</h2>
             </div>
 
             <div class="content-background-wrapper">
                 <div class="container">
                     <!-- Editorial Grid for featured works -->
                     <div class="editorial-grid">
-                        <div class="grid-item reveal">
-                            <img src="paintings/main.jpg" alt="Painting Main" loading="lazy" decoding="async" width="800" height="600">
+                        <div class="grid-item reveal-image">
+                            <img src="paintings/main.jpg" alt="Painting Main" loading="lazy" decoding="async" width="1755" height="1219">
                         </div>
                     </div>
 
-                    <div class="section-divider reveal"></div>
+                    <div class="section-divider reveal-image"></div>
 
                     <!-- Carousel for additional works -->
-                    <div class="carousel-section reveal">
+                    <div class="carousel-section reveal-image">
                         <div class="carousel-container">
                             <div class="carousel-track">
                                 <div class="carousel-item">
@@ -161,7 +167,7 @@
 
         <section id="sculptures">
             <div class="container">
-                <h2 class="section-title reveal">Sculptures</h2>
+                <h2 class="section-title reveal-text">Sculptures</h2>
 
                 <!-- Carousel for Sculptures (Removed reveal for stability) -->
                 <div class="carousel-section">
@@ -197,7 +203,7 @@
                     </div>
                 </div>
 
-                <div class="section-divider reveal"></div>
+                <div class="section-divider reveal-image"></div>
 
                 <!-- Feature Row 1 (Removed reveal) -->
                 <div class="feature-row">
@@ -249,22 +255,25 @@
 
         <section id="logos">
             <div class="container">
-                <h2 class="section-title reveal">Logos</h2>
+                <h2 class="section-title reveal-text">Logos</h2>
             </div>
 
             <div class="content-background-wrapper">
                 <div class="container">
                     <!-- Editorial Grid for featured logos -->
                     <div class="editorial-grid">
-                        <div class="grid-item reveal">
+                        <div class="grid-item reveal-image">
                             <img src="logos/main.jpg" alt="Logo Main" loading="lazy" decoding="async">
+                        </div>
+                        <div class="grid-item reveal-image">
+                            <img src="logos/main%202.jpg" alt="Logo Main 2" loading="lazy" decoding="async">
                         </div>
                     </div>
 
-                    <div class="section-divider reveal"></div>
+                    <div class="section-divider reveal-image"></div>
 
                     <!-- Carousel for additional logos -->
-                    <div class="carousel-section reveal">
+                    <div class="carousel-section reveal-image">
                         <div class="carousel-container">
                             <div class="carousel-track">
                                 <div class="carousel-item">
@@ -314,10 +323,10 @@
 
         <section id="websites">
             <div class="container">
-                <h2 class="section-title reveal">Websites</h2>
+                <h2 class="section-title reveal-text">Websites</h2>
 
                 <!-- Website 1: Matcha Matcha -->
-                <div class="website-showcase reveal">
+                <div class="website-showcase reveal-image">
                     <div class="feature-row">
                         <div class="feature-image">
                             <img src="websites/matchamatcha/main1.png" alt="Matcha Matcha Website" loading="lazy" decoding="async">
@@ -350,7 +359,7 @@
                         </div>
                     </div>
 
-                    <div class="carousel-section reveal">
+                    <div class="carousel-section reveal-image">
                         <div class="carousel-container">
                             <div class="carousel-track">
                                 <div class="carousel-item">
@@ -384,10 +393,10 @@
                     </div>
                 </div>
 
-                <div class="section-divider reveal"></div>
+                <div class="section-divider reveal-image"></div>
 
                 <!-- Website 2: Ilona's Nails Kulture -->
-                <div class="website-showcase reveal">
+                <div class="website-showcase reveal-image">
                     <div class="feature-row reverse">
                         <div class="feature-image">
                             <img src="websites/nails/main2.png" alt="Ilona's Nails Kulture Website" loading="lazy" decoding="async">
@@ -421,7 +430,7 @@
                         </div>
                     </div>
 
-                    <div class="carousel-section reveal">
+                    <div class="carousel-section reveal-image">
                         <div class="carousel-container">
                             <div class="carousel-track">
                                 <div class="carousel-item">
@@ -455,10 +464,10 @@
                     </div>
                 </div>
 
-                <div class="section-divider reveal"></div>
+                <div class="section-divider reveal-image"></div>
 
                 <!-- Website 3: Viva Ästhetik -->
-                <div class="website-showcase reveal">
+                <div class="website-showcase reveal-image">
                     <div class="feature-row">
                         <div class="feature-image">
                             <img src="websites/viva/main3.png" alt="Viva Ästhetik Website" loading="lazy" decoding="async">
@@ -492,7 +501,7 @@
                         </div>
                     </div>
 
-                    <div class="carousel-section reveal">
+                    <div class="carousel-section reveal-image">
                         <div class="carousel-container">
                             <div class="carousel-track">
                                 <div class="carousel-item">
@@ -532,15 +541,15 @@
 
         <section id="bio">
             <div class="container">
-                <h2 class="section-title reveal">Bio / CV</h2>
+                <h2 class="section-title reveal-text">Bio / CV</h2>
 
-                <div class="bio-intro reveal">
+                <div class="bio-intro reveal-text">
                     <p class="bio-intro-text">
                         Founded on April 12, 2023, in Prague, the "<span class="studio-name">Cir<span
                                 class="accent-c">c</span>le Studio</span>" integrates both physical and digital art
                         disciplines. 
                     </p>
-                    <div class="bio-separator-small"></div>
+                    <div class="bio-separator-small reveal-image"></div>
                     <p class="bio-intro-text">
                         Our work spans fine art, sculpture, ceramics, graphic design, web design, and
                         digital branding. We focus on combining artistic depth with modern technology, creating cohesive
@@ -548,10 +557,10 @@
                     </p>
                 </div>
 
-                <div class="bio-divider"></div>
+                <div class="bio-divider reveal-image"></div>
 
                 <!-- Annel Profile -->
-                <div class="team-member reveal">
+                <div class="team-member reveal-image">
                     <div class="team-member__photo">
                         <img src="bio/annel.jpg" alt="Annel Amanzholova">
                     </div>
@@ -563,7 +572,7 @@
                             <p>Academy of Arts, Kassel, Germany — Fine Arts (Painting)</p>
                             <p>University of Vienna, Austria — Art History</p>
                         </div>
-                        <div class="bio-separator-small"></div>
+                        <div class="bio-separator-small reveal-image"></div>
                         <p class="team-member__bio">
                             Annel works at the intersection of contemporary art and creative direction. Her practice is
                             rooted in classical painting and expanded through ceramics and mixed media. She confidently
@@ -574,10 +583,10 @@
                     </div>
                 </div>
 
-                <div class="bio-divider"></div>
+                <div class="bio-divider reveal-image"></div>
 
                 <!-- Ignat Profile -->
-                <div class="team-member reveal">
+                <div class="team-member reveal-image">
                     <div class="team-member__photo">
                         <img src="bio/ignat.jpg" alt="Ignat Nikolayev">
                     </div>
@@ -589,7 +598,7 @@
                             <p>Czech University of Life Sciences, Prague — Informatics</p>
                             <p>University of Vienna, Austria — Web Design</p>
                         </div>
-                        <div class="bio-separator-small"></div>
+                        <div class="bio-separator-small reveal-image"></div>
                         <p class="team-member__bio">
                             Founder of the studio and responsible for all digital and visual systems. Ignat specializes
                             in web design, graphic design, and digital branding, focusing on structure, usability, and
@@ -599,10 +608,10 @@
                     </div>
                 </div>
 
-                <div class="bio-divider"></div>
+                <div class="bio-divider reveal-image"></div>
 
                 <!-- Team & Workflow -->
-                <div class="team-workflow reveal">
+                <div class="team-workflow reveal-text">
                     <h3 class="team-workflow__title">Team & Workflow</h3>
                     <p class="team-workflow__text">
                         The studio operates with a flexible outsourcing model. For each project, specialists are
@@ -616,13 +625,13 @@
 
         <section id="contact">
             <div class="container">
-                <h2 class="section-title">Contact</h2>
+                <h2 class="section-title reveal-text">Contact</h2>
                 <div class="contact-wrapper">
-                    <p class="contact-intro">Available for freelance projects, collaborations, and exhibitions.</p>
+                    <p class="contact-intro reveal-text">Available for freelance projects, collaborations, and exhibitions.</p>
 
                     <div class="contact-grid-layout">
                         <!-- Studio -->
-                        <div class="contact-block">
+                        <div class="contact-block reveal-text">
                             <h3 class="contact-name">Circle Studio</h3>
                             <div class="contact-links">
                                 <div class="contact-row">
@@ -637,7 +646,7 @@
                         </div>
 
                         <!-- Ignat -->
-                        <div class="contact-block">
+                        <div class="contact-block reveal-text">
                             <h3 class="contact-name">Ignat</h3>
                             <div class="contact-links">
                                 <div class="contact-row">
@@ -656,7 +665,7 @@
                         </div>
 
                         <!-- Annel -->
-                        <div class="contact-block">
+                        <div class="contact-block reveal-text">
                             <h3 class="contact-name">Annel</h3>
                             <div class="contact-links">
                                 <div class="contact-row">
