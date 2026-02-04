@@ -138,6 +138,7 @@ section {
     margin-left: calc(-50vw + 50%);
     box-shadow: 0 0 0 100vmax rgba(128, 0, 32, 0.95); /* Better way to do full width without side gaps */
     clip-path: inset(0 -100vmax); /* Keep shadow within bounds */
+    margin-top: 0; /* Ensure no top margin */
 }
 
 .content-background-wrapper .section-title {
@@ -167,7 +168,7 @@ section {
 }
 
 #paintings, #logos {
-    padding-top: 1rem !important; /* Extremely tight top */
+    padding-top: 0 !important; /* Remove top padding completely */
     padding-bottom: 0 !important;
 }
 
@@ -243,6 +244,7 @@ h4 {
     justify-content: center;
     /* Constant slow rotation base */
     animation: slowRotate 60s linear infinite;
+    max-width: 100%; /* Ensure it doesn't overflow mobile width */
 }
 
 .symbol-container .circle {
@@ -316,8 +318,8 @@ h4 {
 
     100% {
         opacity: 1;
-        /* Expand to full ring */
-        transform: rotate(var(--rot)) translate(clamp(100px, 30vw, 150px)) scale(1);
+        /* Expand to full ring - Responsive clamp */
+        transform: rotate(var(--rot)) translate(clamp(60px, 35vw, 150px)) scale(1);
         filter: blur(0px);
     }
 }
@@ -463,6 +465,9 @@ header.scrolled {
 @media (max-width: 480px) {
     .hero-text h1 {
         font-size: 2rem; /* Force smaller size on very small screens to fit */
+        word-wrap: break-word; /* Ensure long words wrap */
+        overflow-wrap: break-word; /* Modern standard */
+        hyphens: auto; /* Hyphenate if necessary */
     }
     
     .logo {
