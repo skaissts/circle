@@ -162,14 +162,31 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(continuousScroll);
 
         // Pause on hover for manual control
+        // Pause on hover/interaction for manual control, resume after delay
         const carouselContainer = section.querySelector('.carousel-container');
+        let resumeTimeout;
+
         if (carouselContainer) {
-            carouselContainer.addEventListener('mouseenter', () => {
+            const pauseCarousel = () => {
                 isPaused = true;
-            });
+                clearTimeout(resumeTimeout);
+            };
+
+            const resumeCarousel = () => {
+                resumeTimeout = setTimeout(() => {
+                    isPaused = false;
+                }, 3000); // Resume after 3 seconds of inactivity
+            };
+
+            // Mouse events
+            carouselContainer.addEventListener('mouseenter', pauseCarousel);
             carouselContainer.addEventListener('mouseleave', () => {
-                isPaused = false;
+                resumeCarousel();
             });
+
+            // Touch events for mobile
+            carouselContainer.addEventListener('touchstart', pauseCarousel, { passive: true });
+            carouselContainer.addEventListener('touchend', resumeCarousel);
         }
     };
 
@@ -311,10 +328,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const particleCount = 60; // Not too crowded
         const connectionDistance = 100; // Unused for simple dust, but good for constellation fx
 
+        let lastWidth = window.innerWidth;
+
         const resize = () => {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            initParticles();
+            // Only resize if width changes (ignores mobile URL bar height changes)
+            if (window.innerWidth !== lastWidth) {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+                lastWidth = window.innerWidth;
+                initParticles();
+            }
         };
 
         class Particle {

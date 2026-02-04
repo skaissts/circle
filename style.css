@@ -33,6 +33,7 @@
 html {
     font-size: var(--font-size-base);
     scroll-behavior: smooth;
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 body {
@@ -42,6 +43,9 @@ body {
     background-color: var(--bg-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden; /* Double assurance */
+    position: relative;
+    width: 100%;
 }
 
 #dust-canvas {
@@ -413,9 +417,10 @@ header.scrolled {
 }
 
 .hero-text h1 {
-    font-size: clamp(2rem, 5vw, 4rem);
+    font-size: clamp(2.5rem, 6vw, 4.5rem); /* Increased slightly for desktop, keep mobile readable */
     margin-bottom: var(--spacing-xs);
     text-align: center;
+    line-height: 1.1;
 }
 
 .subtitle {
@@ -423,6 +428,17 @@ header.scrolled {
     color: var(--text-secondary);
     font-weight: 300;
     text-align: center;
+    padding: 0 1rem; /* Prevent edge touching on mobile */
+}
+
+@media (max-width: 480px) {
+    .hero-text h1 {
+        font-size: 2rem; /* Force smaller size on very small screens to fit */
+    }
+    
+    .logo {
+        font-size: 1.2rem; /* Shrink logo slightly on mobile */
+    }
 }
 
 /* Studio Description */
@@ -507,12 +523,20 @@ header.scrolled {
     position: relative;
     overflow: hidden;
     padding: 10px 0;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    section {
+        overflow: hidden; /* Prevent any child from pushing mobile width */
+    }
 }
 
 .carousel-track {
     display: flex;
     transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
     gap: 10px;
+    will-change: transform; /* Hint to browser for GPU acceleration */
 }
 
 .carousel-item {
@@ -614,6 +638,104 @@ header.scrolled {
 }
 
 /* Bio & Contact */
+
+/* Team Member Layout */
+.team-member {
+    display: grid;
+    grid-template-columns: 200px 1fr; /* Fixed photo width, rest for text */
+    gap: var(--spacing-lg);
+    align-items: start;
+    margin-bottom: var(--spacing-lg);
+}
+
+.team-member__photo img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    border-radius: 2px;
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
+}
+
+.team-member:hover .team-member__photo img {
+    filter: grayscale(0%);
+}
+
+.team-member__info {
+    padding-top: var(--spacing-xs);
+}
+
+.team-member__name {
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 0.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.team-member__role {
+    font-size: 0.8rem;
+    color: #800020; /* Burgundy accent */
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--spacing-md);
+}
+
+.team-member__education {
+    margin-bottom: var(--spacing-md);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.education-label {
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 0.3rem;
+    color: var(--text-primary);
+}
+
+.bio-separator-small {
+    width: 40px;
+    height: 1px;
+    background-color: var(--accent);
+    margin: var(--spacing-md) 0;
+    opacity: 0.3;
+}
+
+@media (max-width: 768px) {
+    .team-member {
+        grid-template-columns: 1fr; /* Stack vertically */
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+    
+    .team-member__photo {
+        max-width: 250px; /* Limit image size */
+        margin: 0 auto;
+    }
+
+    .bio-separator-small {
+        margin: var(--spacing-md) auto; /* Center separator */
+    }
+}
+
+.team-workflow__title {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.team-workflow__text {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1.7;
+    font-weight: 300;
+}
+
 /* Contact Section */
 #contact {
     padding-bottom: var(--spacing-xl);
@@ -789,6 +911,30 @@ footer {
     flex: 1;
     display: flex;
     justify-content: center;
+}
+
+@media (max-width: 900px) {
+    .feature-row,
+    .feature-row.reverse {
+        flex-direction: column-reverse; /* Puts image (which is 2nd in DOM usually? No wait, check HTML) */
+        /* Wait, HTML structure:
+           Standard: Image, Text. column-reverse -> Text on top, Image bottom. Correct.
+           Reverse: Image (right), Text (left). CSS row-reverse makes it Text Left, Image Right visually.
+           In DOM it is Image, Text.
+           So column-reverse will ALWAYS put Text (2nd child) on top of Image (1st child).
+           Perfect.
+        */
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+    
+    .feature-text {
+        padding: 0 var(--spacing-sm);
+    }
+    
+    .feature-image img {
+        max-height: 50vh;
+    }
 }
 
 .feature-image img {
