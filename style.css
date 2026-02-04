@@ -134,11 +134,13 @@ section {
     padding: 10px 0; /* Minimal internal padding */
     margin: 0;
     position: relative;
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
-    box-shadow: 0 0 0 100vmax rgba(128, 0, 32, 0.95); /* Better way to do full width without side gaps */
-    clip-path: inset(0 -100vmax); /* Keep shadow within bounds */
-    margin-top: 0; /* Ensure no top margin */
+    width: 100%; /* Fix: Remove 100vw hack to prevent overflow */
+    margin-left: 0;
+    box-shadow: none; /* Remove legacy shadow hack */
+    clip-path: none;
+    margin-top: 0;
+    padding-top: 2rem; /* Restore some internal padding */
+    padding-bottom: 2rem;
 }
 
 .content-background-wrapper .section-title {
@@ -464,14 +466,45 @@ header.scrolled {
 
 @media (max-width: 480px) {
     .hero-text h1 {
-        font-size: 2rem; /* Force smaller size on very small screens to fit */
-        word-wrap: break-word; /* Ensure long words wrap */
-        overflow-wrap: break-word; /* Modern standard */
-        hyphens: auto; /* Hyphenate if necessary */
+        font-size: 1.8rem; /* Smaller, safer size */
+        padding: 0 10px; /* Prevent edge touching */
     }
     
     .logo {
-        font-size: 1.2rem; /* Shrink logo slightly on mobile */
+        font-size: 1.2rem;
+    }
+
+    /* Strict Mobile Symbol Constraints */
+    .symbol-container {
+        width: 280px !important;
+        height: 280px !important;
+    }
+
+    /* Reduce orbit size on mobile */
+    .symbol-container .circle {
+        /* Force smaller translations override animation */
+        width: 30px;
+        height: 30px;
+        border-width: 6px;
+    }
+    
+    /* We need to override the keyframes or the variable usage for mobile
+       Since keyframes use --rot and translate, we can adjust the scale or the container */
+}
+
+/* Update Keyframes to be safer generally */
+@keyframes circleBloom {
+    0% {
+        opacity: 0;
+        transform: rotate(var(--rot)) translate(60px) scale(0.6);
+        filter: blur(4px);
+    }
+
+    100% {
+        opacity: 1;
+        /* Responsive clamp: min 90px, preferred 25vw, max 150px */
+        transform: rotate(var(--rot)) translate(clamp(90px, 25vw, 150px)) scale(1);
+        filter: blur(0px);
     }
 }
 
