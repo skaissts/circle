@@ -24,6 +24,15 @@
     --header-height: 80px;
 }
 
+@media (max-width: 480px) {
+    :root {
+        --spacing-md: 0.8rem;
+        --spacing-lg: 1.5rem;
+        --header-height: 60px;
+        --spacing-xl: 3rem; /* Aggressive squash for this too */
+    }
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -139,8 +148,39 @@ section {
     box-shadow: none; /* Remove legacy shadow hack */
     clip-path: none;
     margin-top: 0;
-    padding-top: 0.7rem; /* Reduced by ~3x from 2rem */
-    padding-bottom: 0.7rem;
+    padding-top: 5px; /* Aggressive reduction */
+    padding-bottom: 5px;
+}
+
+@media (max-width: 480px) {
+    .content-background-wrapper {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    /* Target the title specifically in the paintings section */
+    #paintings .section-title {
+        margin-bottom: 0 !important;
+        padding-bottom: 5px !important;
+        line-height: 1 !important; /* Reduce vertical height of text itself */
+    }
+    
+    /* Remove the bad selector that didn't work */
+    
+    .editorial-grid {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        gap: 2px !important; /* Even smaller gap */
+    }
+
+    .grid-item .caption {
+        margin-top: 2px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .section-divider {
+        margin: 5px auto !important;
+    }
 }
 
 .content-background-wrapper .section-title {
@@ -564,6 +604,7 @@ header.scrolled {
 
 .grid-item {
     width: auto;
+    max-width: 100%; /* Prevent overflow */
     /* Natural proportions dictated by image */
     transition: all 0.4s ease;
 }
@@ -572,6 +613,7 @@ header.scrolled {
     max-height: 75vh;
     /* Large presence */
     width: auto;
+    max-width: 100%; /* Double assurance */
     object-fit: contain;
     /* Removing the border that the user called "контур" */
     border: none !important;
@@ -582,7 +624,7 @@ header.scrolled {
 
 .grid-item .caption {
     font-size: 0.9rem;
-    margin: 12px 15px;
+    margin: 6px 5px; /* Reduced caption margins */
     text-align: left;
     color: var(--text-secondary);
 }
