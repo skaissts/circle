@@ -209,8 +209,8 @@ h4 {
 
 .symbol-container {
     position: relative;
-    width: 400px;
-    height: 400px;
+    width: clamp(280px, 80vw, 400px);
+    height: clamp(280px, 80vw, 400px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -220,11 +220,11 @@ h4 {
 
 .symbol-container .circle {
     position: absolute;
-    width: 48px;
-    height: 48px;
+    width: clamp(30px, 10vw, 48px);
+    height: clamp(30px, 10vw, 48px);
     background-color: transparent;
     /* Hollow center */
-    border: 10px solid var(--accent);
+    border: clamp(6px, 2vw, 10px) solid var(--accent);
     /* Balanced black outline */
     border-radius: 50%;
     opacity: 0;
@@ -276,21 +276,21 @@ h4 {
 }
 
 .symbol-container .circle {
-    transform: rotate(var(--rot)) translate(150px);
+    transform: rotate(var(--rot)) translate(clamp(100px, 30vw, 150px));
 }
 
 @keyframes circleBloom {
     0% {
         opacity: 0;
         /* Start slightly expanded to avoid messy center overlap */
-        transform: rotate(var(--rot)) translate(80px) scale(0.6);
+        transform: rotate(var(--rot)) translate(clamp(60px, 20vw, 80px)) scale(0.6);
         filter: blur(4px);
     }
 
     100% {
         opacity: 1;
         /* Expand to full ring */
-        transform: rotate(var(--rot)) translate(150px) scale(1);
+        transform: rotate(var(--rot)) translate(clamp(100px, 30vw, 150px)) scale(1);
         filter: blur(0px);
     }
 }
@@ -414,6 +414,8 @@ header.scrolled {
 .hero-text {
     margin-top: var(--spacing-md);
     text-align: center;
+    position: relative;
+    z-index: 10; /* Ensure text is above circles */
 }
 
 .hero-text h1 {
