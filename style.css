@@ -148,22 +148,38 @@ section {
     box-shadow: none; /* Remove legacy shadow hack */
     clip-path: none;
     margin-top: 0;
-    padding-top: 5px; /* Aggressive reduction */
-    padding-bottom: 5px;
+    padding-top: 15px !important; /* FIXED: Constant small padding */
+    padding-bottom: 15px !important; /* FIXED: Constant small padding */
+}
+
+/* Force TITLES in paintings/logos to be tight everywhere */
+#paintings .section-title,
+#logos .section-title {
+    margin-bottom: 0 !important;
+    padding-bottom: 15px !important; /* Increased from 5px */
+    line-height: 1 !important;
+}
+
+/* Force GRID to be tight everywhere */
+#paintings .editorial-grid,
+#logos .editorial-grid {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    gap: 15px !important; /* Increased from 5px */
 }
 
 @media (max-width: 480px) {
     .content-background-wrapper {
-        padding-top: 0 !important;
+        padding-top: 5px !important; /* Keep consistent */
         margin-top: 0 !important;
     }
 
-    /* Target the title specifically in the paintings section */
-    #paintings .section-title {
+    /* Target the title specifically in the paintings section - REMOVED to match Logos */
+    /* #paintings .section-title {
         margin-bottom: 0 !important;
         padding-bottom: 5px !important;
-        line-height: 1 !important; /* Reduce vertical height of text itself */
-    }
+        line-height: 1 !important; 
+    } */
     
     /* Remove the bad selector that didn't work */
     
@@ -178,9 +194,11 @@ section {
         margin-bottom: 10px !important;
     }
 
-    .section-divider {
-        margin: 5px auto !important;
+    .grid-item .caption {
+        margin-top: 2px !important;
+        margin-bottom: 10px !important;
     }
+    /* section-divider override removed - now global */
 }
 
 .content-background-wrapper .section-title {
@@ -566,9 +584,9 @@ header.scrolled {
 
 /* Studio Description */
 #studio-description {
-    padding: var(--spacing-md) 0;
+    padding: 10px 0 var(--spacing-md) 0; /* Reduced top padding significantly */
+    margin: -30px auto 0 auto; /* Pull section higher */
     max-width: 800px;
-    margin: 0 auto;
     text-align: center;
 }
 
@@ -633,8 +651,15 @@ header.scrolled {
 .section-divider {
     height: 1px;
     background-color: rgba(255, 255, 255, 0.15);
-    margin: 10px auto; /* ULTRA TIGHT */
+    margin: 15px auto !important; /* FIXED: Always 15px vertical margin, never changes */
     width: 150px;
+}
+
+.text-divider {
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.1); /* Subtle grey, matches site "beauty" */
+    margin: 30px auto !important; /* Proper breathing room */
+    width: 150px; /* Standard site divider width */
 }
 
 /* Carousel */
@@ -664,8 +689,9 @@ header.scrolled {
 }
 
 .carousel-item {
-    min-width: 250px;
-    width: 250px;
+    min-width: 350px; /* Increased from 250px */
+    width: 350px;
+    max-width: 85vw; /* Safety for mobile */
     flex-shrink: 0;
 }
 
@@ -1381,4 +1407,15 @@ footer {
 
 .lightbox-close:hover {
     color: #800020;
+}
+
+/* User requested fix: Hide Paintings divider on mobile */
+@media (max-width: 768px) {
+  #paintings .section-divider {
+    display: none;
+  }
+}
+
+.text-burgundy {
+    color: #800020 !important;
 }
