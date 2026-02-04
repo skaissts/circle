@@ -59,7 +59,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 10001; /* Above preloader bg but logic in JS will handle opacity */
+    z-index: -1; /* Behind everything */
     pointer-events: none;
     opacity: 0;
     transition: opacity 1s ease;
@@ -798,10 +798,15 @@ header.scrolled {
 }
 
 /* Featured sections use larger carousel items */
-#paintings .carousel-item,
-#logos .carousel-item {
+#paintings .carousel-item {
     min-width: 350px;
     width: 350px;
+    max-width: 85vw;
+}
+
+#logos .carousel-item {
+    min-width: 250px;
+    width: 250px;
     max-width: 85vw;
 }
 

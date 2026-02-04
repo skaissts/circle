@@ -408,14 +408,14 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(progressInterval);
         if (loadingBar) loadingBar.style.width = '100%';
 
-        // Ensure dust is visible during preloader (if not already)
-        const canvas = document.getElementById('dust-canvas');
-        if (canvas) canvas.style.opacity = '1';
-
         // Minimum preloader time for brand experience
         setTimeout(() => {
             document.body.classList.remove('loading');
             document.body.classList.add('body-loaded');
+            
+            // Ensure dust is visible ONLY AFTER preloader is gone
+            const canvas = document.getElementById('dust-canvas');
+            if (canvas) canvas.style.opacity = '1';
             
             // Trigger initial reveals after preloader is gone
             setTimeout(() => {
