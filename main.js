@@ -218,19 +218,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    // Track both text and image reveals
-    document.querySelectorAll('.reveal-text, .reveal-image').forEach(el => observer.observe(el));
+    // Track only text reveals
+    document.querySelectorAll('.reveal-text').forEach(el => observer.observe(el));
 
     // Stagger Animations for Grids
     const staggerGrids = () => {
         document.querySelectorAll('.editorial-grid, .contact-grid-layout').forEach(grid => {
             const items = grid.querySelectorAll('.grid-item, .contact-block');
             items.forEach((item, index) => {
-                // Determine if item or its content should be revealed
-                // Most grid items contain images or blocks
-                const target = item.classList.contains('reveal-image') || item.classList.contains('reveal-text') 
+                const target = item.classList.contains('reveal-text') 
                     ? item 
-                    : item.querySelector('.reveal-image, .reveal-text');
+                    : item.querySelector('.reveal-text');
                 
                 if (target) {
                     const delay = (index % 4) * 100;
@@ -240,6 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     };
+
     staggerGrids();
 
     // Typography Coloring: Only the 3rd letter of section titles
@@ -392,8 +391,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initDust();
 
+    // Loading Bar Logic
+    const loadingBar = document.querySelector('.loading-bar');
+    let progress = 0;
+    const progressInterval = setInterval(() => {
+        progress += Math.random() * 15;
+        if (progress > 95) {
+            progress = 95;
+            clearInterval(progressInterval);
+        }
+        if (loadingBar) loadingBar.style.width = `${progress}%`;
+    }, 200);
+
     // Load Handling & Preloader
     window.addEventListener('load', () => {
+        clearInterval(progressInterval);
+        if (loadingBar) loadingBar.style.width = '100%';
+
+        // Ensure dust is visible during preloader (if not already)
+        const canvas = document.getElementById('dust-canvas');
+        if (canvas) canvas.style.opacity = '1';
+
         // Minimum preloader time for brand experience
         setTimeout(() => {
             document.body.classList.remove('loading');
@@ -417,6 +435,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 document.querySelectorAll('.reveal-text, .reveal-image').forEach(el => observer.observe(el));
             }, 300);
-        }, 800);
+        }, 1000); // Slightly longer for more "wow"
     });
 });

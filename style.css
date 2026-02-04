@@ -39,7 +39,6 @@
     box-sizing: border-box;
 }
 
-/* Preloader */
 #preloader {
     position: fixed;
     top: 0;
@@ -50,8 +49,57 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+    z-index: 10000; /* Extremely high */
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 1.2s;
+}
+
+#dust-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10001; /* Above preloader bg but logic in JS will handle opacity */
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.preloader-content {
+    position: relative;
+    z-index: 10002; /* Top-most */
+    text-align: center;
+}
+
+.preloader-hero-symbol {
+    position: relative;
+    margin-bottom: 60px;
+    height: 100px; /* Constrain height for preloader */
+}
+
+.preloader-hero-symbol .circle {
+    width: 30px !important;
+    height: 30px !important;
+    border-width: 6px !important;
+}
+
+.preloader-hero-symbol .circle {
+    transform: rotate(var(--rot)) translate(80px) !important;
+}
+
+.loading-bar-container {
+    width: 160px;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.05);
+    margin: 30px auto 0;
+    overflow: hidden;
+}
+
+.loading-bar {
+    width: 0%;
+    height: 100%;
+    background: #800020;
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .body-loaded #preloader {
@@ -60,22 +108,9 @@
     pointer-events: none;
 }
 
-.preloader-content {
-    text-align: center;
-}
-
-.preloader-symbol {
-    width: 40px;
-    height: 40px;
-    border: 1px solid #800020;
-    border-radius: 50%;
-    margin: 0 auto 20px;
-    animation: pulse-preloader 1.5s ease-in-out infinite;
-}
-
 .preloader-text {
-    font-size: 0.7rem;
-    letter-spacing: 0.4em;
+    font-size: 0.65rem;
+    letter-spacing: 0.5em;
     color: var(--text-primary);
     font-weight: 300;
 }
@@ -112,18 +147,6 @@ body {
     width: 100%;
 }
 
-#dust-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    pointer-events: none;
-    outline: none;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
 
 /* Delays are now handled by .reveal-text and .reveal-image classes below */
 
@@ -873,23 +896,10 @@ header.scrolled {
     transform: translateY(0);
 }
 
-.reveal-image {
-    opacity: 0;
-    transform: scale(1.04);
-    transition: 
-        opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), 
-        transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: opacity, transform;
-}
+.reveal-text.delay-100 { transition-delay: 0.1s; }
+.reveal-text.delay-200 { transition-delay: 0.2s; }
+.reveal-text.delay-300 { transition-delay: 0.3s; }
 
-.reveal-image.active {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.reveal-text.delay-100, .reveal-image.delay-100 { transition-delay: 0.1s; }
-.reveal-text.delay-200, .reveal-image.delay-200 { transition-delay: 0.2s; }
-.reveal-text.delay-300, .reveal-image.delay-300 { transition-delay: 0.3s; }
 
 
 

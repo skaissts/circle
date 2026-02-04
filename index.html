@@ -15,8 +15,20 @@
 <body class="loading">
     <div id="preloader">
         <div class="preloader-content">
-            <div class="preloader-symbol"></div>
+            <div class="symbol-container preloader-hero-symbol">
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+            </div>
             <div class="preloader-text">CIRCLE STUDIO</div>
+            <div class="loading-bar-container">
+                <div class="loading-bar"></div>
+            </div>
         </div>
     </div>
     <canvas id="dust-canvas"></canvas>
@@ -45,7 +57,7 @@
         <section id="hero">
             <div class="container">
                 <div class="placeholder hero-image" style="height: 60vh;">
-                    <div class="symbol-scroll-wrapper reveal-image">
+                    <div class="symbol-scroll-wrapper">
                         <div class="symbol-container">
                             <div class="circle"></div>
                             <div class="circle"></div>
@@ -66,19 +78,19 @@
         </section>
 
         <!-- Studio Description Section -->
-        <div class="section-divider reveal-image"></div>
+        <div class="section-divider"></div>
         
         <section id="studio-description">
             <div class="container">
-                <div class="text-divider reveal-image"></div>
+                <div class="text-divider"></div>
                 <p class="studio-description-text reveal-text">
                     Cir<span class="accent-c">c</span>le Studio is a multidisciplinary studio focused on visual art and digital design. Our work spans physical artworks and digital products, uniting artistic expression with functional design.
                 </p>
-                <div class="text-divider reveal-image"></div>
+                <div class="text-divider"></div>
             </div>
         </section>
 
-        <div class="section-divider reveal-image"></div>
+        <div class="section-divider"></div>
 
 
 
@@ -91,15 +103,15 @@
                 <div class="container">
                     <!-- Editorial Grid for featured works -->
                     <div class="editorial-grid">
-                        <div class="grid-item reveal-image">
+                        <div class="grid-item">
                             <img src="paintings/main.jpg" alt="Painting Main" loading="lazy" decoding="async" width="1755" height="1219">
                         </div>
                     </div>
 
-                    <div class="section-divider reveal-image"></div>
+                    <div class="section-divider"></div>
 
                     <!-- Carousel for additional works -->
-                    <div class="carousel-section reveal-image">
+                    <div class="carousel-section">
                         <div class="carousel-container">
                             <div class="carousel-track">
                                 <div class="carousel-item">
@@ -203,7 +215,7 @@
                     </div>
                 </div>
 
-                <div class="section-divider reveal-image"></div>
+                <div class="section-divider"></div>
 
                 <!-- Feature Row 1 (Removed reveal) -->
                 <div class="feature-row">
@@ -262,18 +274,18 @@
                 <div class="container">
                     <!-- Editorial Grid for featured logos -->
                     <div class="editorial-grid">
-                        <div class="grid-item reveal-image">
+                        <div class="grid-item">
                             <img src="logos/main.jpg" alt="Logo Main" loading="lazy" decoding="async">
                         </div>
-                        <div class="grid-item reveal-image">
+                        <div class="grid-item">
                             <img src="logos/main%202.jpg" alt="Logo Main 2" loading="lazy" decoding="async">
                         </div>
                     </div>
 
-                    <div class="section-divider reveal-image"></div>
+                    <div class="section-divider"></div>
 
                     <!-- Carousel for additional logos -->
-                    <div class="carousel-section reveal-image">
+                    <div class="carousel-section">
                         <div class="carousel-container">
                             <div class="carousel-track">
                                 <div class="carousel-item">
@@ -326,7 +338,7 @@
                 <h2 class="section-title reveal-text">Websites</h2>
 
                 <!-- Website 1: Matcha Matcha -->
-                <div class="website-showcase reveal-image">
+                <div class="website-showcase">
                     <div class="feature-row">
                         <div class="feature-image">
                             <img src="websites/matchamatcha/main1.png" alt="Matcha Matcha Website" loading="lazy" decoding="async">
@@ -359,7 +371,7 @@
                         </div>
                     </div>
 
-                    <div class="carousel-section reveal-image">
+                    <div class="carousel-section">
                         <div class="carousel-container">
                             <div class="carousel-track">
                                 <div class="carousel-item">
@@ -393,10 +405,10 @@
                     </div>
                 </div>
 
-                <div class="section-divider reveal-image"></div>
+                <div class="website-divider" style="height: 1px; background: rgba(0,0,0,0.08); width: 100%; max-width: 1200px; margin: 30px auto;"></div>
 
                 <!-- Website 2: Ilona's Nails Kulture -->
-                <div class="website-showcase reveal-image">
+                <div class="website-showcase">
                     <div class="feature-row reverse">
                         <div class="feature-image">
                             <img src="websites/nails/main2.png" alt="Ilona's Nails Kulture Website" loading="lazy" decoding="async">
@@ -430,7 +442,7 @@
                         </div>
                     </div>
 
-                    <div class="carousel-section reveal-image">
+                    <div class="carousel-section">
                         <div class="carousel-container">
                             <div class="carousel-track">
                                 <div class="carousel-item">
@@ -464,10 +476,10 @@
                     </div>
                 </div>
 
-                <div class="section-divider reveal-image"></div>
+                <div class="website-divider" style="height: 1px; background: rgba(0,0,0,0.08); width: 100%; max-width: 1200px; margin: 30px auto;"></div>
 
                 <!-- Website 3: Viva Ästhetik -->
-                <div class="website-showcase reveal-image">
+                <div class="website-showcase">
                     <div class="feature-row">
                         <div class="feature-image">
                             <img src="websites/viva/main3.png" alt="Viva Ästhetik Website" loading="lazy" decoding="async">
@@ -501,7 +513,7 @@
                         </div>
                     </div>
 
-                    <div class="carousel-section reveal-image">
+                    <div class="carousel-section">
                         <div class="carousel-container">
                             <div class="carousel-track">
                                 <div class="carousel-item">
@@ -549,7 +561,7 @@
                                 class="accent-c">c</span>le Studio</span>" integrates both physical and digital art
                         disciplines. 
                     </p>
-                    <div class="bio-separator-small reveal-image"></div>
+                    <div class="bio-separator-small"></div>
                     <p class="bio-intro-text">
                         Our work spans fine art, sculpture, ceramics, graphic design, web design, and
                         digital branding. We focus on combining artistic depth with modern technology, creating cohesive
@@ -557,10 +569,10 @@
                     </p>
                 </div>
 
-                <div class="bio-divider reveal-image"></div>
+                <div class="bio-divider"></div>
 
                 <!-- Annel Profile -->
-                <div class="team-member reveal-image">
+                <div class="team-member">
                     <div class="team-member__photo">
                         <img src="bio/annel.jpg" alt="Annel Amanzholova">
                     </div>
@@ -572,7 +584,7 @@
                             <p>Academy of Arts, Kassel, Germany — Fine Arts (Painting)</p>
                             <p>University of Vienna, Austria — Art History</p>
                         </div>
-                        <div class="bio-separator-small reveal-image"></div>
+                        <div class="bio-separator-small"></div>
                         <p class="team-member__bio">
                             Annel works at the intersection of contemporary art and creative direction. Her practice is
                             rooted in classical painting and expanded through ceramics and mixed media. She confidently
@@ -583,10 +595,10 @@
                     </div>
                 </div>
 
-                <div class="bio-divider reveal-image"></div>
+                <div class="bio-divider"></div>
 
                 <!-- Ignat Profile -->
-                <div class="team-member reveal-image">
+                <div class="team-member">
                     <div class="team-member__photo">
                         <img src="bio/ignat.jpg" alt="Ignat Nikolayev">
                     </div>
@@ -598,7 +610,7 @@
                             <p>Czech University of Life Sciences, Prague — Informatics</p>
                             <p>University of Vienna, Austria — Web Design</p>
                         </div>
-                        <div class="bio-separator-small reveal-image"></div>
+                        <div class="bio-separator-small"></div>
                         <p class="team-member__bio">
                             Founder of the studio and responsible for all digital and visual systems. Ignat specializes
                             in web design, graphic design, and digital branding, focusing on structure, usability, and
@@ -608,7 +620,7 @@
                     </div>
                 </div>
 
-                <div class="bio-divider reveal-image"></div>
+                <div class="bio-divider"></div>
 
                 <!-- Team & Workflow -->
                 <div class="team-workflow reveal-text">
