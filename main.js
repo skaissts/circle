@@ -333,17 +333,23 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             draw() {
-                ctx.save(); // Save context state
                 if (this.isBurgundy) {
-                    ctx.shadowBlur = 10; // Glow effect
-                    ctx.shadowColor = '#ff3366'; // Bright glow color
+                    ctx.save();
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = '#ff3366';
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                } else {
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
                 }
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore(); // Restore to avoid affecting next particles
             }
+
         }
 
         const initParticles = () => {
@@ -353,29 +359,36 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
+        // Use IntersectionObserver to track if dust should be visible
+        let isDustVisible = false;
+        const dustObserver = new IntersectionObserver((entries) => {
+            isDustVisible = entries.some(entry => entry.isIntersecting);
+        }, { threshold: 0 });
+
+        const hero = document.getElementById('hero');
+        const contact = document.getElementById('contact');
+        if (hero) dustObserver.observe(hero);
+        if (contact) dustObserver.observe(contact);
+
         const animate = () => {
-            ctx.clearRect(0, 0, width, height);
-
-            // Check if Hero or Contact is in view to show particles
-            const hero = document.getElementById('hero');
-            const contact = document.getElementById('contact');
-            let shouldShow = false;
-
-            if (hero || contact) {
-                const heroRect = hero?.getBoundingClientRect();
-                const contactRect = contact?.getBoundingClientRect();
-                
-                const isHeroVisible = heroRect && heroRect.bottom > 0 && heroRect.top < window.innerHeight;
-                const isContactVisible = contactRect && contactRect.bottom > 0 && contactRect.top < window.innerHeight;
-                
-                shouldShow = isHeroVisible || isContactVisible;
-            }
-
-            if (shouldShow) {
+            if (isDustVisible) {
                 canvas.style.opacity = '1';
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw non-burgundy particles first (Batch 1)
                 particles.forEach(p => {
-                    p.update();
-                    p.draw();
+                    if (!p.isBurgundy) {
+                        p.update();
+                        p.draw();
+                    }
+                });
+
+                // Draw burgundy particles (Batch 2 - Selective save/restore for glow)
+                particles.forEach(p => {
+                    if (p.isBurgundy) {
+                        p.update();
+                        p.draw();
+                    }
                 });
             } else {
                 canvas.style.opacity = '0';
@@ -384,6 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(animate);
         };
 
+
         window.addEventListener('resize', resize);
         resize();
         animate();
@@ -391,33 +405,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initDust();
 
-    // Loading Bar Logic
+    // Loading Bar Logic (Smooth & Fast)
     const loadingBar = document.querySelector('.loading-bar');
     let progress = 0;
     const progressInterval = setInterval(() => {
-        progress += Math.random() * 15;
-        if (progress > 95) {
-            progress = 95;
+        // Smaller increments at a faster rate for a "liquid" feel
+        const increment = Math.random() * 2 + 0.5; 
+        progress += increment;
+        
+        if (progress > 92) {
+            progress = 92; // Wait for real load
             clearInterval(progressInterval);
         }
         if (loadingBar) loadingBar.style.width = `${progress}%`;
-    }, 200);
+    }, 40); // 40ms for high-frequency smoothness
 
     // Load Handling & Preloader
     window.addEventListener('load', () => {
         clearInterval(progressInterval);
         if (loadingBar) loadingBar.style.width = '100%';
 
-        // Minimum preloader time for brand experience
+        // Reduced delay for faster perception
         setTimeout(() => {
             document.body.classList.remove('loading');
             document.body.classList.add('body-loaded');
             
-            // Ensure dust is visible ONLY AFTER preloader is gone
             const canvas = document.getElementById('dust-canvas');
             if (canvas) canvas.style.opacity = '1';
             
-            // Trigger initial reveals after preloader is gone
             setTimeout(() => {
                 const observerOptions = {
                     threshold: 0.1,
@@ -434,7 +449,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, observerOptions);
 
                 document.querySelectorAll('.reveal-text, .reveal-image').forEach(el => observer.observe(el));
-            }, 300);
-        }, 1000); // Slightly longer for more "wow"
+            }, 150); // Snappier reveal trigger
+        }, 400); // Drastically reduced from 1000ms
     });
+
 });
