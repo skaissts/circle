@@ -7,9 +7,25 @@
     <title>Portfolio | Designer & Artist</title>
     <link rel="icon" type="image/png" href="/favicon.png?v=2">
     <link rel="stylesheet" href="style.css">
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    
+    <!-- Smooth Scroll (Lenis) -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <style>
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+        .lenis.lenis-scrolling iframe { pointer-events: none; }
+    </style>
+
+    <!-- Critical Image Preloading -->
+    <link rel="preload" as="image" href="paintings/main.jpg" fetchpriority="high">
+    <link rel="preload" as="image" href="logos/main.jpg" fetchpriority="high">
+    <link rel="preload" as="image" href="logos/main%202.jpg" fetchpriority="high">
 </head>
 
 <body class="loading">
@@ -34,7 +50,7 @@
     <canvas id="dust-canvas"></canvas>
     <header id="header">
         <div class="container header-content">
-            <a href="#" class="logo">CIR<span class="text-burgundy">C</span>LE STUDIO</a>
+            <a href="#" class="logo reveal-text">CIR<span class="text-burgundy">C</span>LE STUDIO</a>
             <nav>
                 <div class="menu-toggle" aria-label="Toggle Navigation">
                     <span></span>
@@ -104,7 +120,7 @@
                     <!-- Editorial Grid for featured works -->
                     <div class="editorial-grid">
                         <div class="grid-item">
-                            <img src="paintings/main.jpg" alt="Painting Main" loading="lazy" decoding="async" width="1755" height="1219">
+                            <img src="paintings/main.jpg" alt="Painting Main" fetchpriority="high" width="1755" height="1219">
                         </div>
                     </div>
 
@@ -115,13 +131,13 @@
                         <div class="carousel-container">
                             <div class="carousel-track">
                                 <div class="carousel-item">
-                                    <img src="paintings/main%202.jpg" alt="Painting Main 2" loading="lazy" decoding="async">
+                                    <img src="paintings/main%202.jpg" alt="Painting Main 2" decoding="async">
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="paintings/04_Portfolio%20_page-0003.jpg" alt="Painting 03" loading="lazy" decoding="async">
+                                    <img src="paintings/04_Portfolio%20_page-0003.jpg" alt="Painting 03" decoding="async">
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="paintings/04_Portfolio%20_page-0004.jpg" alt="Painting 04" loading="lazy" decoding="async">
+                                    <img src="paintings/04_Portfolio%20_page-0004.jpg" alt="Painting 04" decoding="async">
                                 </div>
                                 <div class="carousel-item">
                                     <img src="paintings/04_Portfolio%20_page-0005.jpg" alt="Painting 05" loading="lazy" decoding="async">
@@ -223,16 +239,16 @@
                         <img src="sculptures/1.png" alt="Sculpture Detail 1" loading="lazy" decoding="async">
                     </div>
                     <div class="feature-text">
-                        <p><strong>Material:</strong> wood (solid wood).</p>
-                        <p><strong>Technique:</strong> hand carving, sanding.</p>
-                        <p class="feature-description">
+                        <p class="reveal-text"><strong>Material:</strong> wood (solid wood).</p>
+                        <p class="reveal-text"><strong>Technique:</strong> hand carving, sanding.</p>
+                        <p class="feature-description reveal-text">
                             An organic abstract form with an elongated, almost musical silhouette. Flowing lines and
                             asymmetry emphasize a sense of movement and inner tension within the figure. Traces of
                             manual craftsmanship are intentionally preserved as part of the sculpture’s texture and
                             expression. The small perforations in the slender element introduce rhythm and evoke
                             associations with sound or breath.
                         </p>
-                        <p class="feature-description">
+                        <p class="feature-description reveal-text">
                             The work explores the balance between mass and fragility, stillness and fluidity,
                             leaving space for the viewer’s personal interpretation.
                         </p>
@@ -245,15 +261,15 @@
                         <img src="sculptures/2.png" alt="Sculpture Detail 2" loading="lazy" decoding="async">
                     </div>
                     <div class="feature-text">
-                        <p><strong>Material:</strong> stone / ceramic.</p>
-                        <p><strong>Technique:</strong> hand modeling, carving, surface texturing.</p>
-                        <p class="feature-description">
+                        <p class="reveal-text"><strong>Material:</strong> stone / ceramic.</p>
+                        <p class="reveal-text"><strong>Technique:</strong> hand modeling, carving, surface texturing.</p>
+                        <p class="feature-description reveal-text">
                             A figurative sculptural form reduced to an essential, almost archetypal presence. The
                             elongated head and open mouth suggest a frozen cry, breath, or silent vocalization,
                             capturing a moment of raw emotional tension. The rough, uneven surface emphasizes the
                             material’s resistance and enhances the sense of vulnerability and erosion.
                         </p>
-                        <p class="feature-description">
+                        <p class="feature-description reveal-text">
                             The separation between head and body subtly reinforces the feeling of inner rupture,
                             while the compact, grounded mass contrasts with the expressive intensity of the face.
                             The work explores themes of voice, confinement, and the physical embodiment of emotion.
@@ -275,10 +291,10 @@
                     <!-- Editorial Grid for featured logos -->
                     <div class="editorial-grid">
                         <div class="grid-item">
-                            <img src="logos/main.jpg" alt="Logo Main" loading="lazy" decoding="async">
+                            <img src="logos/main.jpg" alt="Logo Main" fetchpriority="high">
                         </div>
                         <div class="grid-item">
-                            <img src="logos/main%202.jpg" alt="Logo Main 2" loading="lazy" decoding="async">
+                            <img src="logos/main%202.jpg" alt="Logo Main 2" fetchpriority="high">
                         </div>
                     </div>
 
@@ -289,10 +305,10 @@
                         <div class="carousel-container">
                             <div class="carousel-track">
                                 <div class="carousel-item">
-                                    <img src="logos/02_logos fusion_page-0005.jpg" alt="Logo 05" loading="lazy" decoding="async">
+                                    <img src="logos/02_logos fusion_page-0005.jpg" alt="Logo 05" decoding="async">
                                 </div>
                                 <div class="carousel-item">
-                                    <img src="logos/02_logos fusion_page-0006.jpg" alt="Logo 06" loading="lazy" decoding="async">
+                                    <img src="logos/02_logos fusion_page-0006.jpg" alt="Logo 06" decoding="async">
                                 </div>
                                 <div class="carousel-item">
                                     <img src="logos/02_logos fusion_page-0007.jpg" alt="Logo 07" loading="lazy" decoding="async">
@@ -344,29 +360,29 @@
                             <img src="websites/matchamatcha/main1.png" alt="Matcha Matcha Website" loading="lazy" decoding="async">
                         </div>
                         <div class="feature-text">
-                            <h3 class="showcase-title">Matcha Matcha — Website Design</h3>
-                            <p class="feature-description">
+                            <h3 class="showcase-title reveal-text">Matcha Matcha — Website Design</h3>
+                            <p class="feature-description reveal-text">
                                 A clean, minimal website designed for a matcha café in Kassel. The visual concept is
                                 built around calmness, clarity, and product focus, using a natural color palette,
                                 generous spacing, and simple typography. The layout highlights the brand atmosphere
                                 while keeping the user experience fast and intuitive.
                             </p>
-                            <p><strong>Functions & Features</strong></p>
+                            <p class="reveal-text"><strong>Functions & Features</strong></p>
                             <ul class="feature-list">
-                                <li>Fully responsive design (desktop, tablet, mobile)</li>
-                                <li>Clear navigation with logical page structure</li>
-                                <li>Smooth scrolling and subtle interactions</li>
-                                <li>Strong visual hierarchy and CTA placement</li>
-                                <li>Brand-consistent color system and typography</li>
-                                <li>Optimized performance and fast loading</li>
-                                <li>Easy access to location, menu, and social links</li>
+                                <li class="reveal-text">Fully responsive design (desktop, tablet, mobile)</li>
+                                <li class="reveal-text">Clear navigation with logical page structure</li>
+                                <li class="reveal-text">Smooth scrolling and subtle interactions</li>
+                                <li class="reveal-text">Strong visual hierarchy and CTA placement</li>
+                                <li class="reveal-text">Brand-consistent color system and typography</li>
+                                <li class="reveal-text">Optimized performance and fast loading</li>
+                                <li class="reveal-text">Easy access to location, menu, and social links</li>
                             </ul>
-                            <p class="feature-description">
+                            <p class="feature-description reveal-text">
                                 The website communicates the brand's identity efficiently while maintaining a modern,
                                 lightweight, and user-friendly interface suitable for both casual visitors and returning
                                 customers.
                             </p>
-                            <p class="website-link"><a href="https://matchamatcha.site" target="_blank"
+                            <p class="website-link reveal-text"><a href="https://matchamatcha.site" target="_blank"
                                     rel="noopener">matchamatcha.site</a></p>
                         </div>
                     </div>
@@ -414,8 +430,8 @@
                             <img src="websites/nails/main2.png" alt="Ilona's Nails Kulture Website" loading="lazy" decoding="async">
                         </div>
                         <div class="feature-text">
-                            <h3 class="showcase-title">Ilona's Nails Kulture — Website Design</h3>
-                            <p class="feature-description">
+                            <h3 class="showcase-title reveal-text">Ilona's Nails Kulture — Website Design</h3>
+                            <p class="feature-description reveal-text">
                                 A clean, service-focused one-page website designed for a premium nail salon in Vienna.
                                 The layout prioritizes clarity and ease of use, with a clear hierarchy of sections for
                                 services, pricing, portfolio images, and contact details. Visual simplicity and
@@ -423,21 +439,21 @@
                                 salon's work and reinforces trust.
                             </p>
 
-                            <p><strong>Functions & Features</strong></p>
+                            <p class="reveal-text"><strong>Functions & Features</strong></p>
                             <ul class="feature-list">
-                                <li>Multilingual interface (DE / RU / EN)</li>
-                                <li>Service list with prices</li>
-                                <li>About / philosophy section highlighting expertise</li>
-                                <li>Portfolio gallery</li>
-                                <li>Clear call-to-action — appointment booking via phone/WhatsApp</li>
-                                <li>Contact details with address and direct links</li>
+                                <li class="reveal-text">Multilingual interface (DE / RU / EN)</li>
+                                <li class="reveal-text">Service list with prices</li>
+                                <li class="reveal-text">About / philosophy section highlighting expertise</li>
+                                <li class="reveal-text">Portfolio gallery</li>
+                                <li class="reveal-text">Clear call-to-action — appointment booking via phone/WhatsApp</li>
+                                <li class="reveal-text">Contact details with address and direct links</li>
                             </ul>
-                            <p class="feature-description">
+                            <p class="feature-description reveal-text">
                                 The site efficiently communicates professionalism, highlights the salon's quality
                                 standards and services, and makes booking fast and intuitive for new and returning
                                 clients.
                             </p>
-                            <p class="website-link"><a href="https://ilonasnailkultur-pbwk.vercel.app" target="_blank"
+                            <p class="website-link reveal-text"><a href="https://ilonasnailkultur-pbwk.vercel.app" target="_blank"
                                     rel="noopener">ilonasnailkultur-pbwk.vercel.app</a></p>
                         </div>
                     </div>
@@ -485,30 +501,30 @@
                             <img src="websites/viva/main3.png" alt="Viva Ästhetik Website" loading="lazy" decoding="async">
                         </div>
                         <div class="feature-text">
-                            <h3 class="showcase-title">Viva Ästhetik — Website Design & Functionality</h3>
-                            <p class="feature-description">
+                            <h3 class="showcase-title reveal-text">Viva Ästhetik — Website Design & Functionality</h3>
+                            <p class="feature-description reveal-text">
                                 A multi-page website created for a cosmetic clinic in Kassel, designed to present
                                 services clearly and support a structured, professional user journey. The design
                                 combines a modern, clinical aesthetic with approachable visuals and typography,
                                 reinforcing trust and quality. Each section is crafted to guide users from discovery to
                                 booking with minimum friction.
                             </p>
-                            <p><strong>Functions & Features</strong></p>
+                            <p class="reveal-text"><strong>Functions & Features</strong></p>
                             <ul class="feature-list">
-                                <li>Multi-page architecture for comprehensive service presentation</li>
-                                <li>Integrated online booking / appointment system</li>
-                                <li>Service detail pages with descriptions and pricing</li>
-                                <li>Contact forms and request capture</li>
-                                <li>Location and opening hours visibility</li>
-                                <li>Smooth navigation and clear call-to-action across pages</li>
-                                <li>Consistent branding across site structure</li>
+                                <li class="reveal-text">Multi-page architecture for comprehensive service presentation</li>
+                                <li class="reveal-text">Integrated online booking / appointment system</li>
+                                <li class="reveal-text">Service detail pages with descriptions and pricing</li>
+                                <li class="reveal-text">Contact forms and request capture</li>
+                                <li class="reveal-text">Location and opening hours visibility</li>
+                                <li class="reveal-text">Smooth navigation and clear call-to-action across pages</li>
+                                <li class="reveal-text">Consistent branding across site structure</li>
                             </ul>
-                            <p class="feature-description">
+                            <p class="feature-description reveal-text">
                                 The site supports both informational depth and functional interaction, enabling users to
                                 explore treatments, learn about expertise, and directly schedule appointments —
                                 enhancing user engagement and business conversion.
                             </p>
-                            <p class="website-link"><a href="https://vivaasthetik.de" target="_blank"
+                            <p class="website-link reveal-text"><a href="https://vivaasthetik.de" target="_blank"
                                     rel="noopener">vivaasthetik.de</a></p>
                         </div>
                     </div>
@@ -556,13 +572,13 @@
                 <h2 class="section-title reveal-text">Bio / CV</h2>
 
                 <div class="bio-intro reveal-text">
-                    <p class="bio-intro-text">
+                    <p class="bio-intro-text reveal-text">
                         Founded on April 12, 2023, in Prague, the "<span class="studio-name">Cir<span
                                 class="accent-c">c</span>le Studio</span>" integrates both physical and digital art
                         disciplines. 
                     </p>
                     <div class="bio-separator-small"></div>
-                    <p class="bio-intro-text">
+                    <p class="bio-intro-text reveal-text">
                         Our work spans fine art, sculpture, ceramics, graphic design, web design, and
                         digital branding. We focus on combining artistic depth with modern technology, creating cohesive
                         visual solutions across multiple mediums.
@@ -577,15 +593,15 @@
                         <img src="bio/annel.jpg" alt="Annel Amanzholova">
                     </div>
                     <div class="team-member__info">
-                        <h3 class="team-member__name">Annel Amanzholova</h3>
-                        <p class="team-member__role">General Director · Creative Producer</p>
-                        <div class="team-member__education">
+                        <h3 class="team-member__name reveal-text">Annel Amanzholova</h3>
+                        <p class="team-member__role reveal-text">General Director · Creative Producer</p>
+                        <div class="team-member__education reveal-text">
                             <span class="education-label">Education:</span>
                             <p>Academy of Arts, Kassel, Germany — Fine Arts (Painting)</p>
                             <p>University of Vienna, Austria — Art History</p>
                         </div>
                         <div class="bio-separator-small"></div>
-                        <p class="team-member__bio">
+                        <p class="team-member__bio reveal-text">
                             Annel works at the intersection of contemporary art and creative direction. Her practice is
                             rooted in classical painting and expanded through ceramics and mixed media. She confidently
                             operates across multiple artistic techniques, combining material experimentation with
@@ -603,15 +619,15 @@
                         <img src="bio/ignat.jpg" alt="Ignat Nikolayev">
                     </div>
                     <div class="team-member__info">
-                        <h3 class="team-member__name">Ignat Nikolayev</h3>
-                        <p class="team-member__role">CEO · Web & Graphic Designer</p>
-                        <div class="team-member__education">
+                        <h3 class="team-member__name reveal-text">Ignat Nikolayev</h3>
+                        <p class="team-member__role reveal-text">CEO · Web & Graphic Designer</p>
+                        <div class="team-member__education reveal-text">
                             <span class="education-label">Education:</span>
                             <p>Czech University of Life Sciences, Prague — Informatics</p>
                             <p>University of Vienna, Austria — Web Design</p>
                         </div>
                         <div class="bio-separator-small"></div>
-                        <p class="team-member__bio">
+                        <p class="team-member__bio reveal-text">
                             Founder of the studio and responsible for all digital and visual systems. Ignat specializes
                             in web design, graphic design, and digital branding, focusing on structure, usability, and
                             conversion. He leads digital strategy, UI/UX decisions, and technical implementation,
@@ -644,13 +660,13 @@
                     <div class="contact-grid-layout">
                         <!-- Studio -->
                         <div class="contact-block reveal-text">
-                            <h3 class="contact-name">Circle Studio</h3>
+                            <h3 class="contact-name reveal-text">Circle Studio</h3>
                             <div class="contact-links">
-                                <div class="contact-row">
+                                <div class="contact-row reveal-text">
                                     <span class="contact-label">Email</span>
                                     <a href="mailto:circlestudio@gmail.com">circlestudio@gmail.com</a>
                                 </div>
-                                <div class="contact-row">
+                                <div class="contact-row reveal-text">
                                     <span class="contact-label">Inst</span>
                                     <a href="https://instagram.com/circlestudio" target="_blank">@circlestudio</a>
                                 </div>
@@ -659,17 +675,17 @@
 
                         <!-- Ignat -->
                         <div class="contact-block reveal-text">
-                            <h3 class="contact-name">Ignat</h3>
+                            <h3 class="contact-name reveal-text">Ignat</h3>
                             <div class="contact-links">
-                                <div class="contact-row">
+                                <div class="contact-row reveal-text">
                                     <span class="contact-label">Email</span>
                                     <a href="mailto:nikolayevignat@gmail.com">nikolayevignat@gmail.com</a>
                                 </div>
-                                <div class="contact-row">
+                                <div class="contact-row reveal-text">
                                     <span class="contact-label">LinkedIn</span>
                                     <a href="https://linkedin.com/in/ignat-nikolayev-2a5755374" target="_blank">Profile</a>
                                 </div>
-                                <div class="contact-row">
+                                <div class="contact-row reveal-text">
                                     <span class="contact-label">Inst</span>
                                     <a href="https://instagram.com/skaissts" target="_blank">@skaissts</a>
                                 </div>
@@ -678,13 +694,13 @@
 
                         <!-- Annel -->
                         <div class="contact-block reveal-text">
-                            <h3 class="contact-name">Annel</h3>
+                            <h3 class="contact-name reveal-text">Annel</h3>
                             <div class="contact-links">
-                                <div class="contact-row">
+                                <div class="contact-row reveal-text">
                                     <span class="contact-label">Email</span>
                                     <a href="mailto:annelamanzholova@gmail.com">annelamanzholova@gmail.com</a>
                                 </div>
-                                <div class="contact-row">
+                                <div class="contact-row reveal-text">
                                     <span class="contact-label">Inst</span>
                                     <a href="https://instagram.com/nacsyaaa" target="_blank">@nacsyaaa</a>
                                 </div>
@@ -698,8 +714,8 @@
 
     <footer>
         <div class="container footer-content">
-            <p>&copy; 2026 Circle Studio. All rights reserved.</p>
-            <div class="footer-links">
+            <p class="reveal-text">&copy; 2026 Circle Studio. All rights reserved.</p>
+            <div class="footer-links reveal-text">
                 <a href="mailto:hello@example.com">Contact</a>
             </div>
         </div>
