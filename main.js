@@ -421,11 +421,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 40); // 40ms for high-frequency smoothness
 
     // Load Handling & Preloader
-    window.addEventListener('load', () => {
+    const hidePreloader = () => {
+        if (document.body.classList.contains('body-loaded')) return;
+        
         clearInterval(progressInterval);
         if (loadingBar) loadingBar.style.width = '100%';
 
-        // Reduced delay for faster perception
         setTimeout(() => {
             document.body.classList.remove('loading');
             document.body.classList.add('body-loaded');
@@ -449,8 +450,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, observerOptions);
 
                 document.querySelectorAll('.reveal-text, .reveal-image').forEach(el => observer.observe(el));
-            }, 150); // Snappier reveal trigger
-        }, 400); // Drastically reduced from 1000ms
-    });
+            }, 100);
+        }, 400);
+    };
 
+    // Failsafe: Show site after 3.5s regardless of asset load status
+    const failsafeTimeout = setTimeout(hidePreloader, 3500);
+
+    window.addEventListener('load', () => {
+        clearTimeout(failsafeTimeout);
+        hidePreloader();
+    });
 });
