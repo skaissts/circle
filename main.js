@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Carousel Logic (Reusable component)
-    const initCarousel = (section, carouselIndex) => {
+    const initCarousel = (section, carouselIndex, moveMultiplier = 1) => {
         const track = section.querySelector('.carousel-track');
         const nextBtn = section.querySelector('.nav-btn.next');
         const prevBtn = section.querySelector('.nav-btn.prev');
@@ -103,10 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const sw = getSetWidth();
             const avgW = sw / n;
             
-            // Move approximately to the next/prev based on average width
-            // Since we use variable widths, we'll snap to the nearest item in resetPosition later
-            // For now, simple jump is enough for UX
-            currentX += avgW * dir;
+            // Apply multiplier for larger jumps in sections with many items
+            currentX += avgW * dir * moveMultiplier;
             
             updateTrack();
 
@@ -146,7 +144,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize all carousels with index for alternating direction
     document.querySelectorAll('.carousel-section').forEach((section, index) => {
-        initCarousel(section, index);
+        // Subtle increase for Paintings (index 0) to account for many items, but keep it feeling natural
+        const multiplier = index === 0 ? 1.5 : 1;
+        initCarousel(section, index, multiplier);
     });
 
     // Lightbox Logic
