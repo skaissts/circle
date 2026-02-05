@@ -391,24 +391,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initDust();
 
-    // Loading Bar Logic
+    // Optimized Loading Bar Logic
     const loadingBar = document.querySelector('.loading-bar');
     let progress = 0;
-    const progressInterval = setInterval(() => {
-        progress += Math.random() * 15;
-        if (progress > 95) {
-            progress = 95;
-            clearInterval(progressInterval);
+    
+    // Faster, smoother progress simulation
+    const updateProgress = () => {
+        if (progress < 90) {
+            progress += Math.random() * 25; // Larger, more frequent steps
+            if (progress > 90) progress = 90;
+            if (loadingBar) loadingBar.style.width = `${progress}%`;
+            setTimeout(updateProgress, 100 + Math.random() * 200);
         }
-        if (loadingBar) loadingBar.style.width = `${progress}%`;
-    }, 200);
+    };
+    updateProgress();
 
     // Load Handling & Preloader
     window.addEventListener('load', () => {
-        clearInterval(progressInterval);
+        progress = 100;
         if (loadingBar) loadingBar.style.width = '100%';
 
-        // Minimum preloader time for brand experience
+        // Reduced artificial delay for better performance (1000ms -> 300ms)
         setTimeout(() => {
             document.body.classList.remove('loading');
             document.body.classList.add('body-loaded');
@@ -434,7 +437,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, observerOptions);
 
                 document.querySelectorAll('.reveal-text, .reveal-image').forEach(el => observer.observe(el));
-            }, 300);
-        }, 1000); // Slightly longer for more "wow"
+            }, 200);
+        }, 300); //snappy transition
     });
 });
