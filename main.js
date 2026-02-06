@@ -124,6 +124,50 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.addEventListener('click', () => handleManualNav(1));
         prevBtn.addEventListener('click', () => handleManualNav(-1));
 
+        // Touch swipe support for mobile
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let isSwiping = false;
+        
+        track.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            isSwiping = true;
+            isPaused = true;
+            clearTimeout(pauseTimeout);
+        }, { passive: true });
+        
+        track.addEventListener('touchmove', (e) => {
+            if (!isSwiping) return;
+            
+            const touchCurrentX = e.touches[0].clientX;
+            const touchCurrentY = e.touches[0].clientY;
+            const diffX = touchStartX - touchCurrentX;
+            const diffY = touchStartY - touchCurrentY;
+            
+            // Only handle horizontal swipes (ignore vertical scrolling)
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
+                // Move carousel with finger
+                currentX += diffX * 0.5;
+                touchStartX = touchCurrentX;
+                track.style.transition = 'none';
+                track.style.transform = `translateX(-${currentX}px)`;
+            }
+        }, { passive: true });
+        
+        track.addEventListener('touchend', (e) => {
+            if (!isSwiping) return;
+            isSwiping = false;
+            
+            // Reset position to stay within bounds
+            resetPosition();
+            
+            // Resume auto-scroll after delay
+            pauseTimeout = setTimeout(() => {
+                isPaused = false;
+            }, 3000);
+        }, { passive: true });
+
         const animate = () => {
             if (!isPaused && !isManualTransition) {
                 currentX += speed;
@@ -405,26 +449,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initDust();
 
-    // Loading Bar Logic (Smooth & Fast)
+    // Image Preloading System
     const loadingBar = document.querySelector('.loading-bar');
-    let progress = 0;
-    const progressInterval = setInterval(() => {
-        // Smaller increments at a faster rate for a "liquid" feel
-        const increment = Math.random() * 2 + 0.5; 
-        progress += increment;
-        
-        if (progress > 92) {
-            progress = 92; // Wait for real load
-            clearInterval(progressInterval);
-        }
-        if (loadingBar) loadingBar.style.width = `${progress}%`;
-    }, 40); // 40ms for high-frequency smoothness
+    let loadedCount = 0;
+    let totalImages = 0;
+    
+    // Collect all images on the page
+    const allImages = document.querySelectorAll('img');
+    totalImages = allImages.length;
+    
+    // Function to update progress bar based on loaded images
+    const updateProgress = () => {
+        const progress = totalImages > 0 ? (loadedCount / totalImages) * 100 : 100;
+        if (loadingBar) loadingBar.style.width = `${Math.min(progress, 100)}%`;
+    };
+    
+    // Preload all images
+    const preloadImages = () => {
+        return new Promise((resolve) => {
+            if (totalImages === 0) {
+                resolve();
+                return;
+            }
+            
+            allImages.forEach((img) => {
+                // If image is already loaded (cached)
+                if (img.complete && img.naturalHeight !== 0) {
+                    loadedCount++;
+                    updateProgress();
+                    if (loadedCount >= totalImages) resolve();
+                } else {
+                    // Create new Image to preload
+                    const preloadImg = new Image();
+                    preloadImg.onload = () => {
+                        loadedCount++;
+                        updateProgress();
+                        if (loadedCount >= totalImages) resolve();
+                    };
+                    preloadImg.onerror = () => {
+                        loadedCount++;
+                        updateProgress();
+                        if (loadedCount >= totalImages) resolve();
+                    };
+                    preloadImg.src = img.src;
+                }
+            });
+        });
+    };
 
     // Load Handling & Preloader
     const hidePreloader = () => {
         if (document.body.classList.contains('body-loaded')) return;
         
-        clearInterval(progressInterval);
         if (loadingBar) loadingBar.style.width = '100%';
 
         setTimeout(() => {
@@ -451,7 +527,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 document.querySelectorAll('.reveal-text, .reveal-image').forEach(el => observer.observe(el));
             }, 100);
-        }, 400);
+        }, 300);
     };
 
     // Initialize Lenis Smooth Scroll
@@ -473,9 +549,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     requestAnimationFrame(raf);
 
-    // Failsafe: Show site after 3.5s regardless of asset load status
-    const failsafeTimeout = setTimeout(hidePreloader, 3500);
+    // Failsafe: Show site after 8s regardless of asset load status (increased for large images)
+    const failsafeTimeout = setTimeout(hidePreloader, 8000);
 
+    // Start preloading images immediately
+    preloadImages().then(() => {
+        clearTimeout(failsafeTimeout);
+        hidePreloader();
+    });
+    
+    // Also listen for window load as backup
     window.addEventListener('load', () => {
         clearTimeout(failsafeTimeout);
         hidePreloader();
