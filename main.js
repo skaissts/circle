@@ -126,64 +126,65 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Touch swipe support for mobile
         let touchStartX = 0;
-        let touchEndX = 0;
-        let touchStartTime = 0;
         let lastTouchX = 0;
         let velocity = 0;
-        let isSwiping = false;
+        let isTouching = false;
         
-        track.addEventListener('touchstart', (e) => {
+        const container = section.querySelector('.carousel-container');
+        
+        container.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
             lastTouchX = touchStartX;
-            touchStartTime = Date.now();
             velocity = 0;
-            isSwiping = true;
+            isTouching = true;
             isPaused = true;
+            isManualTransition = true;
             clearTimeout(pauseTimeout);
+            track.style.transition = 'none';
         }, { passive: true });
         
-        track.addEventListener('touchmove', (e) => {
-            if (!isSwiping) return;
+        container.addEventListener('touchmove', (e) => {
+            if (!isTouching) return;
             
             const touchCurrentX = e.touches[0].clientX;
             const diffX = lastTouchX - touchCurrentX;
             
-            // Calculate velocity for inertia
             velocity = diffX;
-            
-            // Move carousel 1:1 with finger
             currentX += diffX;
             lastTouchX = touchCurrentX;
             
-            track.style.transition = 'none';
             track.style.transform = `translateX(-${currentX}px)`;
         }, { passive: true });
         
-        track.addEventListener('touchend', (e) => {
-            if (!isSwiping) return;
-            isSwiping = false;
+        container.addEventListener('touchend', () => {
+            if (!isTouching) return;
+            isTouching = false;
             
-            // Apply inertia based on velocity
-            const inertiaDistance = velocity * 8;
-            currentX += inertiaDistance;
+            // Apply momentum
+            const momentum = velocity * 5;
+            currentX += momentum;
             
-            // Smooth transition for inertia effect
-            track.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            track.style.transition = 'transform 0.3s ease-out';
             track.style.transform = `translateX(-${currentX}px)`;
             
-            // Reset position after transition
             setTimeout(() => {
-                resetPosition();
-            }, 400);
+                const sw = getSetWidth();
+                if (sw > 0) {
+                    while (currentX >= 2 * sw) currentX -= sw;
+                    while (currentX < sw) currentX += sw;
+                }
+                track.style.transition = 'none';
+                track.style.transform = `translateX(-${currentX}px)`;
+                isManualTransition = false;
+            }, 300);
             
-            // Resume auto-scroll after delay
             pauseTimeout = setTimeout(() => {
                 isPaused = false;
-            }, 3000);
+            }, 2000);
         }, { passive: true });
 
         const animate = () => {
-            if (!isPaused && !isManualTransition) {
+            if (!isPaused && !isManualTransition && !isTouching) {
                 currentX += speed;
                 const sw = getSetWidth();
                 if (sw > 0) {
