@@ -126,12 +126,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Touch swipe support for mobile
         let touchStartX = 0;
-        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchStartTime = 0;
+        let lastTouchX = 0;
+        let velocity = 0;
         let isSwiping = false;
         
         track.addEventListener('touchstart', (e) => {
             touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
+            lastTouchX = touchStartX;
+            touchStartTime = Date.now();
+            velocity = 0;
             isSwiping = true;
             isPaused = true;
             clearTimeout(pauseTimeout);
@@ -141,26 +146,35 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isSwiping) return;
             
             const touchCurrentX = e.touches[0].clientX;
-            const touchCurrentY = e.touches[0].clientY;
-            const diffX = touchStartX - touchCurrentX;
-            const diffY = touchStartY - touchCurrentY;
+            const diffX = lastTouchX - touchCurrentX;
             
-            // Only handle horizontal swipes (ignore vertical scrolling)
-            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
-                // Move carousel with finger
-                currentX += diffX * 0.5;
-                touchStartX = touchCurrentX;
-                track.style.transition = 'none';
-                track.style.transform = `translateX(-${currentX}px)`;
-            }
+            // Calculate velocity for inertia
+            velocity = diffX;
+            
+            // Move carousel 1:1 with finger
+            currentX += diffX;
+            lastTouchX = touchCurrentX;
+            
+            track.style.transition = 'none';
+            track.style.transform = `translateX(-${currentX}px)`;
         }, { passive: true });
         
         track.addEventListener('touchend', (e) => {
             if (!isSwiping) return;
             isSwiping = false;
             
-            // Reset position to stay within bounds
-            resetPosition();
+            // Apply inertia based on velocity
+            const inertiaDistance = velocity * 8;
+            currentX += inertiaDistance;
+            
+            // Smooth transition for inertia effect
+            track.style.transition = 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            track.style.transform = `translateX(-${currentX}px)`;
+            
+            // Reset position after transition
+            setTimeout(() => {
+                resetPosition();
+            }, 400);
             
             // Resume auto-scroll after delay
             pauseTimeout = setTimeout(() => {
