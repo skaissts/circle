@@ -463,47 +463,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initDust();
 
-    // Image Preloading System
+    // Image Preloading System - Only wait for critical images
     const loadingBar = document.querySelector('.loading-bar');
     let loadedCount = 0;
-    let totalImages = 0;
     
-    // Collect all images on the page
-    const allImages = document.querySelectorAll('img');
-    totalImages = allImages.length;
+    // Only preload critical images (those with fetchpriority="high")
+    const criticalImages = document.querySelectorAll('img[fetchpriority="high"]');
+    const totalCritical = criticalImages.length;
     
     // Function to update progress bar based on loaded images
     const updateProgress = () => {
-        const progress = totalImages > 0 ? (loadedCount / totalImages) * 100 : 100;
+        const progress = totalCritical > 0 ? (loadedCount / totalCritical) * 100 : 100;
         if (loadingBar) loadingBar.style.width = `${Math.min(progress, 100)}%`;
     };
     
-    // Preload all images
-    const preloadImages = () => {
+    // Preload only critical images
+    const preloadCriticalImages = () => {
         return new Promise((resolve) => {
-            if (totalImages === 0) {
+            if (totalCritical === 0) {
                 resolve();
                 return;
             }
             
-            allImages.forEach((img) => {
+            criticalImages.forEach((img) => {
                 // If image is already loaded (cached)
                 if (img.complete && img.naturalHeight !== 0) {
                     loadedCount++;
                     updateProgress();
-                    if (loadedCount >= totalImages) resolve();
+                    if (loadedCount >= totalCritical) resolve();
                 } else {
                     // Create new Image to preload
                     const preloadImg = new Image();
                     preloadImg.onload = () => {
                         loadedCount++;
                         updateProgress();
-                        if (loadedCount >= totalImages) resolve();
+                        if (loadedCount >= totalCritical) resolve();
                     };
                     preloadImg.onerror = () => {
                         loadedCount++;
                         updateProgress();
-                        if (loadedCount >= totalImages) resolve();
+                        if (loadedCount >= totalCritical) resolve();
                     };
                     preloadImg.src = img.src;
                 }
@@ -563,11 +562,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     requestAnimationFrame(raf);
 
-    // Failsafe: Show site after 8s regardless of asset load status (increased for large images)
-    const failsafeTimeout = setTimeout(hidePreloader, 8000);
+    // Failsafe: Show site after 4s regardless of asset load status
+    const failsafeTimeout = setTimeout(hidePreloader, 4000);
 
-    // Start preloading images immediately
-    preloadImages().then(() => {
+    // Start preloading critical images immediately
+    preloadCriticalImages().then(() => {
         clearTimeout(failsafeTimeout);
         hidePreloader();
     });
